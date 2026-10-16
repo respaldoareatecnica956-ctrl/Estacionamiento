@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - HikCentral Professional</title>
+    <style>
+        :root {
+            --hik-red: #E60012;
+            --hik-dark: #1F232B;
+            --hik-gray: #F4F5F7;
+            --hik-text: #333333;
+            --hik-border: #DCDFE6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--hik-gray);
+            color: var(--hik-text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-top: 5px solid var(--hik-red);
+        }
+
+        h2 {
+            color: var(--hik-dark);
+            margin-top: 0;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--hik-gray);
+            padding-bottom: 10px;
+            font-size: 24px;
+        }
+
+        h3 {
+            color: var(--hik-red);
+            font-size: 16px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 10px;
+            border: 1px solid var(--hik-border);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus {
+            border-color: var(--hik-red);
+        }
+
+        /* Sección Biométrica / Foto */
+        .biometric-section {
+            grid-column: span 2;
+            background-color: var(--hik-gray);
+            border: 1px dashed var(--hik-border);
+            border-radius: 6px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .preview-container {
+            width: 160px;
+            height: 200px;
+            border: 2px solid var(--hik-border);
+            border-radius: 4px;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .preview-placeholder {
+            text-align: center;
+            color: #909399;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .btn-upload {
+            border: 1px solid var(--hik-red);
+            color: var(--hik-red);
+            background-color: white;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-upload:hover {
+            background-color: var(--hik-red);
+            color: white;
+        }
+
+        .file-input-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .photo-requirements {
+            font-size: 12px;
+            color: #606266;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* Botón Guardar */
+        .btn-submit {
+            background-color: var(--hik-dark);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 25px;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #2f3542;
+        }
+
+        @media (max-width: 600px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width, .biometric-section {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Registro de Persona - HikCentral Professional</h2>
+    
+    <form id="hikcentralForm" action="/api/person/register" method="POST" enctype="multipart/form-data">
+        
+        <h3>1. Datos Personales</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="personName">Nombre Completo *</label>
+                <input type="text" id="personName" name="personName" required placeholder="Ej. Juan Pérez">
+            </div>
+            
+            <div class="form-group">
+                <label for="personId">ID de Persona (Código/No. Empleado)</label>
+                <input type="text" id="personId" name="personId" placeholder="Ej. EMP1024">
+            </div>
+
+            <div class="form-grid" style="grid-column: span 2; gap: 20px; margin: 0; padding: 0;">
+                <div class="form-group">
+                    <label for="gender">Género</label>
+                    <select id="gender" name="gender">
+                        <option value="1">Masculino</option>
+                        <option value="2">Femenino</option>
+                        <option value="0">No especificado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="orgCode">Código de Organización HikCentral *</label>
+                    <input type="text" id="orgCode" name="orgCode" required value="1" placeholder="Ej. 1 o Root">
+                </div>
+            </div>
+        </div>
+
+        <h3>2. Control de Estacionamiento (ANPR)</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="plateNo">Número de Placa / Patente *</label>
+                <input type="text" id="plateNo" name="plateNo" required placeholder="Ej. ABC1234" style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+                <label for="vehicleType">Tipo de Vehículo</label>
+                <select id="vehicleType" name="vehicleType">
+                    <option value="0">Sedán / Auto Compacto</option>
+                    <option value="1">SUV / Camioneta</option>
+                    <option value="2">Camión / Pesado</option>
+                    <option value="3">Motocicleta</option>
+                </select>
+            </div>
+        </div>
+
+        <h3>3. Registro Biométrico (Rostro)</h3>
+        <div class="form-grid">
+            <div class="biometric-section">
+                <div class="preview-container" id="previewContainer">
+                    <div class="preview-placeholder" id="placeholderText">
+                        Vista previa del rostro para algoritmo HikCentral
+                    </div>
+                    <img id="facePreview" src="#" alt="Vista previa del rostro">
+                </div>
+                
+                <div class="file-input-wrapper">
+                    <button type="button" class="btn-upload">Seleccionar Fotografía</button>
+                    <input type="file" id="faceImage" name="faceImage" accept="image/jpeg, image/png" onchange="previewImage(event)">
+                </div>
+
+                <div class="photo-requirements">
+                    <strong>Requisitos de la API de HikCentral Professional:</strong><br>
+                    Formato: JPG/JPEG o PNG (Preferible JPG) | Tamaño máx: 200 KB<br>
+                    El rostro debe estar centrado, de frente, con fondo claro y buena iluminación.
+                </div>
+            </div>
+        </div>
+
+        <h3>4. Vigencia del Acceso</h3>
+        <div class="form-grid">
+            <div class="form-group">
+                <label for="startTime">Fecha de Inicio</label>
+                <input type="date" id="startTime" name="startTime" required>
+            </div>
+
+            <div class="form-group">
+                <label for="endTime">Fecha de Vencimiento</label>
+                <input type="date" id="endTime" name="endTime" required>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-submit">Registrar en HikCentral</button>
+    </form>
+</div>
+
+<script>
+    // Configurar fechas por defecto (Vigencia de 1 año)
+    window.addEventListener('DOMContentLoaded', () => {
+        const today = new Date();
+        const nextYear = new Date();
+        nextYear.setFullYear(today.getFullYear() + 1);
+
+        document.getElementById('startTime').value = today.toISOString().split('T')[0];
+        document.getElementById('endTime').value = nextYear.toISOString().split('T')[0];
+    });
+
+    // Vista previa dinámica de la foto cargada
+    function previewImage(event) {
+        const reader = new FileReader();
+        const imageField = document.getElementById('facePreview');
+        const placeholder = document.getElementById('placeholderText');
+
+        reader.onload = function() {
+            if (reader.readyState === 2) {
+                imageField.src = reader.result;
+                imageField.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        }
+        
+        if (event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+
+    // Convertir placas a mayúsculas automáticamente en tiempo real
+    document.getElementById('plateNo').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+</script>
+
+</body>
+</html>
